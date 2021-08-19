@@ -17,11 +17,11 @@ BlackDiamond Risk Dashboard'''
 
 
 value_date = st.date_input('Value Date')
-pathTQ= pathlib.Path("C:\\Users\\Saleem\\OneDrive\\Documents\\blkd\\{}".format(value_date))
-
+#pathTQ= pathlib.Path("C:\\Users\\Saleem\\OneDrive\\Documents\\blkd\\{}".format(value_date))
+#URL_DASH = "https://blkd.s3.us-east-2.amazonaws.com/rshinydata/summary/DashSummary.csv"
 fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio'])
 deriv = st.radio('Include Deriv',['Yes','No'])
-data = pd.read_csv(pathlib.Path(pathTQ,fund+".csv"))
+data = pd.read_csv(fund+".csv")
 st.dataframe(data)
 
 #prices = yf.download(tickers=symbol,period='1y')
