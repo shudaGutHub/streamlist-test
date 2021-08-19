@@ -22,7 +22,7 @@ value_date = st.date_input('Value Date')
 fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio'])
 deriv = st.radio('Include Deriv',['Yes','No'])
 data = pd.read_csv(f"{fund}.csv")
-st.dataframe(data.set_index(['Symbol','WEIGHT_USD']))
+st.dataframe(data)
 
 #prices = yf.download(tickers=symbol,period='1y')
 #st.line_chart(prices)
