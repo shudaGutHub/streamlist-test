@@ -1,30 +1,14 @@
 from collections import namedtuple
 import altair as alt
 import math
+import pathlib
 import pandas as pd
 import streamlit as st
-
 import os
 from pandas import concat, DataFrame, read_csv, to_datetime, Series, MultiIndex
 # from datetime import timedelta, datetime
 
-from fractions import Fraction
-import matplotlib.pyplot as plt
-import seaborn as sns
-from s3fs.core import S3FileSystem
-import xlwings as xw
-import datetime as dt
-import yfinance as yf
-import openpyxl
-import scipy.stats as stats
-from collections import namedtuple
 
-from openpyxl import workbook
-import quantstats as qs
-# %%
-import sys
-
-from BDFunds import get_option_data, load_s3_options
 
 
 # Magic commands implicitly `st.write()`
