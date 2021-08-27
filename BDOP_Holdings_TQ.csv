@@ -1,0 +1,50 @@
+﻿ID,Security Description,Symbol,Country,Sector,Asset Class,Asset Group,Shares/Par,Market Value,% of Portfolio,Book Cost,Price Cost,Price Close,Price Change %,Attribution to Book P&L %,Coupon Rate,CUSIP,ISIN,ESG,environment,Social,Governance,Symbol Unq.
+38881,Angi Homeservices Inc.,ANGI US Equity,United States,Communication Services,Equity,Domestic Stock,"240,423","3,221,288",5%,"3,730,551",15.52,13.40,-14%,0%,0,00183L102,US00183L1026,-,-,-,-,ANGI US Equity
+38598,Dave & Buster'S Entertainment Inc.,PLAY US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"57,386","2,684,582",4%,"2,568,063",44.75,46.78,5%,0%,0,238337109,US2383371091,-,-,-,-,PLAY US Equity
+38884,Accor Sa,AC FP Equity,Europe,Consumer Discretionary,Equity,Foreign Stock,"60,418","2,647,149",4%,"2,830,668",46.85,43.81,-6%,0%,0,,FR0000120404,-,-,-,-,AC FP Equity
+16679,Coty Inc,COTY US Equity,United States,Consumer Staples,Equity,Foreign Stock,"254,449","2,637,015",4%,"2,726,437",10.72,10.36,-3%,0%,0,222070203,US2220702037,-,-,-,-,COTY US Equity
+38606,Dufry Ag,DUFN SW Equity,Switzerland,Consumer Discretionary,Equity,Foreign Stock,"37,494","2,629,907",4%,"2,757,004",73.53,70.14,-5%,0%,0,,CH0023405456,-,-,-,-,DUFN VX Equity
+28169,Wynn Resorts Ltd.,WYNN US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"20,612","2,617,369",4%,"2,464,615",119.57,126.98,6%,0%,0,983134107,US9831341071,-,-,-,-,WYNN US Equity
+1248,Alibaba Group Holding Ltd,BABA US Equity,China,Consumer Discretionary,Equity,Foreign Stock,"11,790","2,510,553",4%,"2,989,155",253.53,212.94,-16%,0%,0,01609W102,US01609W1027,-,-,-,-,EQ0000000035266994 Equity
+43255,Alsea Sab De Cv,ALSEA* MM Equity,Mexico,Consumer Discretionary,Equity,Domestic Stock,"1,024,774","2,510,361",4%,"1,629,163",1.59,2.45,54%,0%,0,P0212A104,MXP001391012,-,-,-,-,ALSEA* MM Equity
+40359,Realreal Inc. (The),REAL US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"150,054","2,441,305",4%,"3,527,998",23.51,16.27,-31%,0%,0,88339P101,US88339P1012,-,-,-,-,REAL US Equity
+49006,Ke Holdings Inc,BEKE US Equity,United States,Real Estate,Equity,Domestic Stock,"100,570","2,401,147",4%,"2,546,548",25.32,23.88,-6%,0%,0,482497104,US4824971042,-,-,-,-,BEKE US Equity
+45110,"Tal Education Group, Adr",TAL US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"362,770","2,370,886",4%,"7,494,959",20.66,6.54,-68%,0%,0,874080104,US8740801043,-,-,-,-,TAL US Equity
+8718,Atlantia Spa,ATL IM Equity,Europe,Utilities,Equity,Foreign Stock,"94,968","2,242,336",3%,"2,234,420",23.53,23.61,0%,0%,0,,IT0003506190,-,-,-,-,IT0003506190 Equity
+43496,Thyssenkrupp Ag,TKA GR Equity,Europe,Materials,Equity,Foreign Stock,"166,219","2,234,579",3%,"2,437,191",14.66,13.44,-8%,0%,0,D8398Q119,DE0007500001,-,-,-,-,TKA GR Equity
+48513,Madison Square Garden Entertainment Corp,MSGE US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"23,407","2,207,697",3%,"2,104,171",89.89,94.32,5%,0%,0,55826T102,US55826T1025,-,-,-,-,MSGE US Equity
+25528,Amadeus IT Holding SA,AMS SM Equity,Europe,Information Technology,Equity,Foreign Stock,"28,466","2,177,127",3%,"2,455,050",86.24,76.48,-11%,0%,0,,ES0109067019,-,-,-,-,ES0109067019 Equity
+13294,TENCENT HOLDINGS LTD,TCEHY US Equity,United States,Communication Services,Equity,Foreign Stock,"28,166","2,159,649",3%,"2,050,517",72.80,76.68,5%,0%,0,88032Q109,US88032Q1094,-,-,-,-,B3F2DZ7 US Equity
+22571,Prosus Nv,PROSF Equity,Europe,Consumer Discretionary,Equity,Foreign Stock,"20,257","2,150,089",3%,"2,041,210",100.77,106.14,5%,0%,0,,NL0013654783,-,-,-,-,NL0013654783 Equity
+47562,Cielo Sa,CIEL3 BZ Equity,Brazil,Information Technology,Equity,Domestic Stock,"2,881,500","2,082,080",3%,"2,783,229",0.97,0.72,-25%,0%,0,P2859E100,BRCIELACNOR3,-,-,-,-,CIEL3 BZ Equity
+48370,Irhythm Technologies Inc.,IRTC US Equity,United States,Health Care,Equity,Domestic Stock,"34,924","2,034,864",3%,"2,326,971",66.63,58.27,-13%,0%,0,450056106,US4500561067,-,-,-,-,IRTC US Equity
+38802,Sabre Corporation,SABR US Equity,United States,Information Technology,Equity,Domestic Stock,"146,057","2,030,502",3%,"2,293,786",15.70,13.90,-11%,0%,0,78573M104,US78573M1045,-,-,-,-,SABR US Equity
+49547,Kingsoft Cloud Holdings Ltd,KC US Equity,United States,Information Technology,Equity,Domestic Stock,"52,936","2,011,122",3%,"1,914,259",36.16,37.99,5%,0%,0,49639K101,US49639K1016,-,-,-,-,KC US Equity
+49359,Yatsen Holding Ltd,YSG US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"272,591","2,004,640",3%,"2,067,052",7.58,7.35,-3%,0%,0,985194109,US9851941099,-,-,-,-,YSG US Equity
+49005,"Autohome Inc., Adr",ATHM US Equity,United States,Communication Services,Equity,Domestic Stock,"38,396","1,944,644",3%,"2,043,278",53.22,50.65,-5%,0%,0,05278C107,US05278C1071,-,-,-,-,ATHM US Equity
+40752,"Melia Hotels International, S.A.",MEL SM Equity,Europe,Consumer Discretionary,Equity,Foreign Stock,"204,105","1,864,764",3%,"1,858,737",9.11,9.14,0%,0%,0,,ES0176252718,-,-,-,-,MEL SM Equity
+40836,Johnson Service Group Plc,JSG LN Equity,United Kingdom,Industrials,Equity,Foreign Stock,"688,907","1,790,592",3%,"1,717,219",2.49,2.60,4%,0%,0,,GB0004762810,-,-,-,-,JSG LN Equity
+40753,Ssp Group Plc,SSPG LN Equity,United Kingdom,Consumer Discretionary,Equity,Foreign Stock,"369,508","1,758,204",3%,"1,910,124",5.17,4.76,-8%,0%,0,,GB00BGBN7C04,-,-,-,-,SSPPF Equity
+38602,Autogrill S.P.A.,AGL IM Equity,Europe,Consumer Discretionary,Equity,Foreign Stock,"178,577","1,725,762",3%,"1,457,977",8.16,9.66,18%,0%,0,,IT0001137345,-,-,-,-,AGL IM Equity
+46846,"New Oriental Education & Technology Group Inc., Ad",EDU US Equity,United States,Consumer Staples,Equity,Domestic Stock,"569,481","1,455,751",2%,"3,276,293",5.75,2.56,-56%,0%,0,647581107,US6475811070,-,-,-,-,EDU US Equity
+48704,New Oriental Education & Technology Group Inc,9901 HK Equity,Hong Kong,Consumer Discretionary,Equity,Foreign Stock,"509,900","1,276,875",2%,"1,441,329",2.83,2.50,-11%,0%,0,0,KYG6470A1168,-,-,-,-,9901 HK Equity
+8739,Aena Sa,AENA SM Equity,Europe,Industrials,Equity,Foreign Stock,"6,255","1,265,052",2%,"1,306,650",208.90,202.25,-3%,0%,0,,ES0105046009,-,-,-,-,ES0105046009 Equity
+38605,Mtu Aero Engines Ag,MTX GR Equity,Europe,Industrials,Equity,Foreign Stock,"4,247","1,245,449",2%,"1,250,305",294.40,293.25,0%,0%,0,,DE000A0D9PT0,-,-,-,-,MTX GR Equity
+49548,Alibaba Group Holding Lt Call 180 12/17/21,BABA US 12/17/21 C180 Equity,United States,Consumer Discretionary,Option,Option,500,"720,921",1%,"845,744",16.91,14.42,-15%,0%,0,,BABAL180U,-,-,-,-,
+48199,Spdr S&P 500 ETF Trust Put 430 09/17/21,SPY US 09/17/21 P430 Equity,United States,Equity Index,Option,Option,"3,000","710,217",1%,"2,297,892",7.66,2.37,-69%,0%,0,,SPYU430U,-,-,-,-,
+49549,Baidu Inc Call 170 12/17/21,BIDU US 12/17/21 C170 Equity,United States,Communication Services,Option,Option,400,"400,442",1%,"388,982",9.72,10.01,3%,0%,0,,BIDUL170U,-,-,-,-,
+38603,Krones AG,KRN GR Equity,Europe,Industrials,Equity,Foreign Stock,"1,081","137,234",0%,"94,570",87.48,126.95,45%,0%,0,,DE0006335003,-,-,-,-,KRN GR Equity
+49007,Ke Holdings Inc Put 15 10/15/21,BEKE US 10/15/21 P15 Equity,United States,Real Estate,Option,Option,750,"104,833",0%,"129,388",1.73,1.40,-19%,0%,0,,BEKEV15U,-,-,-,-,
+44624,China Tower Corp Ltd,788 HK Equity,Hong Kong,Industrials,Equity,Foreign Stock,"440,000","72,601",0%,"83,971",0.19,0.17,-14%,0%,0,Y15076105,CNE100003688,-,-,-,-,788 HK Equity
+49009,Wynn Resorts Ltd Put 70 03/18/22,WYNN US 03/18/22 P70 Equity,United States,Consumer Discretionary,Option,Option,200,"69,259",0%,"89,650",4.48,3.46,-23%,0%,0,,WYNNO70U,-,-,-,-,
+48371,Cineworld Group Plc,CINE LN Equity,United Kingdom,Consumer Discretionary,Equity,Foreign Stock,"55,150","64,486",0%,"58,639",1.06,1.17,10%,0%,0,,GB00B15FWH70,-,-,-,-,CINE LN Equity
+48873,Spdr S&P 500 ETF Trust Put 425 09/07/21,SPY US 09/07/21 P425 Equity,United States,Equity Index,Option,Option,"1,000","54,148",0%,"598,459",5.98,0.54,-91%,0%,0,,SPY2U425U,-,-,-,-,
+47845,Tal Education Group Call 32.5 11/19/21,TAL US 11/19/21 C32.5 Equity,United States,Consumer Discretionary,Option,Option,"5,100","19,267",0%,"1,274,399",2.50,0.04,-98%,0%,0,,TALK325U,-,-,-,-,
+47844,Alibaba Group Holding Lt Call 230 09/17/21,BABA US 09/17/21 C230 Equity,United States,Consumer Discretionary,Option,Option,280,"4,936",0%,"231,645",8.27,0.18,-98%,0%,0,,BABAI230U,-,-,-,-,
+9331,"Nokia Oyj, Sponsored Adr",NOK US Equity,United States,Information Technology,Equity,Domestic Stock,-,-,0,-,-,-,0,0,0,654902204,US6549022043,-,-,-,-,2640891 US Equity
+47901,Alibaba Group Holding Lt Call 225 09/17/21,BABA US 09/17/21 C225 Equity,United States,Consumer Discretionary,Option,Option,-140,"-2,997",0,"-228,786",16.34,0.21,-99%,0%,0,,BABAI225U,-,-,-,-,
+48872,Spdr S&P 500 ETF Trust Put 400 09/07/21,SPY US 09/07/21 P400 Equity,United States,Equity Index,Option,Option,"-1,000","-18,889",0%,"-239,634",2.40,0.19,-92%,0%,0,,SPY2U400U,-,-,-,-,
+49008,Wynn Resorts Ltd Put 50 03/18/22,WYNN US 03/18/22 P50 Equity,United States,Consumer Discretionary,Option,Option,-200,"-20,526",0%,"-20,906",1.05,1.03,-2%,0,0,,WYNNO50U,-,-,-,-,
+47304,Spdr S&P 500 ETF Trust Put 410 09/17/21,SPY US 09/17/21 P410 Equity,United States,Equity Index,Option,Option,"-3,000","-313,553",0%,"-1,201,104",4.00,1.05,-74%,0%,0,,SPYU410U,-,-,-,-,
+48788,Tal Education Group Put 7.5 09/17/21,TAL US 09/17/21 P7.5 Equity,United States,Consumer Discretionary,Option,Option,"-4,000","-1,324,731",-2%,"-1,223,985",3.06,3.31,8%,0%,0,,TALU75U,-,-,-,-,
+48787,New Oriental Education & T Put 4.5 09/17/21,EDU US 09/17/21 P4.5 Equity,United States,Consumer Discretionary,Option,Option,"-4,311","-1,357,157",-2%,"-1,237,720",2.87,3.15,10%,0%,0,,EDUU45U,-,-,-,-,

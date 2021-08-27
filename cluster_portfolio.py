@@ -9,7 +9,8 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
-
+import quantstats as qs
+import yfinance as yf
 import pandas as pd
 
 from sklearn import cluster, covariance, manifold
@@ -17,8 +18,13 @@ from pandas import concat, DataFrame, read_csv, to_datetime, Series, MultiIndex
 # from datetime import timedelta, datetime
 
 
+target_portfolio = "BDOP_Portfolio"
+dfport = pd.read_csv(f"./{target_portfolio}.csv").query("AssetType==['EQ','OP']")
+symbols = dfport.symbol.unique()
+tickers = yf.Tickers(list(symbols))
 
-data_cgy = pd.read_csv("../Calgary_Weights_Optimal.csv",parse_dates=['Date']).set_index(['Date'])
+
+data_port =
 ret = data_cgy.pct_change().dropna()
 corr = ret.corr()
 # Learn a graphical structure from the correlations

@@ -26,12 +26,13 @@ from pandas import concat, DataFrame, read_csv, to_datetime, Series, MultiIndex
 value_date = st.date_input('Value Date')
 
 #URL_DASH = "https://blkd.s3.us-east-2.amazonaws.com/rshinydata/summary/DashSummary.csv"
-fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio'])
+
+option = st.sidebar.selectbox('Select one symbol', ( 'AAPL', 'MSFT',"SPY",'WMT'))
+fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio','BDOP_Holdings_TQ.csv'])
 deriv = st.radio('Include Deriv',['Yes','No'])
 data = pd.read_csv(f"{fund}.csv")
 dfoptions = data[data.AssetType=="OP"].copy()
 dfequity = data[data.AssetType=="EQ"].copy()
-
 
 st.dataframe(data)
 
