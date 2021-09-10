@@ -27,10 +27,11 @@ value_date = st.date_input('Value Date')
 
 option = st.sidebar.selectbox('Select one symbol', ( 'AAPL', 'MSFT',"SPY",'WMT'))
 fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio','BDOP_Holdings_TQ.csv'])
-deriv = st.radio('Include Deriv',['Yes','No'])
-data = pd.read_csv(f"{fund}.csv")
-dfoptions = data[data.AssetType=="OP"].copy()
-dfequity = data[data.AssetType=="EQ"].copy()
+file = st.file_uploader("Choose File")
+
+data = pd.read_csv(f"{file}")
+#dfoptions = data[data.AssetType=="OP"].copy()
+#dfequity = data[data.AssetType=="EQ"].copy()
 
 st.dataframe(data)
 
