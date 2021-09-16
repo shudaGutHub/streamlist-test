@@ -12,6 +12,8 @@ from matplotlib.collections import LineCollection
 
 import pandas as pd
 
+from sklearn import cluster, covariance, manifold
+from pandas import concat, DataFrame, read_csv, to_datetime, Series, MultiIndex
 # from datetime import timedelta, datetime
 
 
@@ -24,17 +26,17 @@ import pandas as pd
 value_date = st.date_input('Value Date')
 
 #URL_DASH = "https://blkd.s3.us-east-2.amazonaws.com/rshinydata/summary/DashSummary.csv"
+fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio','BDOP_DERIV'])
 
-option = st.sidebar.selectbox('Select one symbol', ( 'AAPL', 'MSFT',"SPY",'WMT'))
-fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio','BDOP_Holdings_TQ.csv'])
-file = st.file_uploader("Choose File")
+data = pd.read_csv(f"{fund}.csv")
 
-data = pd.read_csv(f"{file}")
-#dfoptions = data[data.AssetType=="OP"].copy()
+#symbols = list(data['Symbol'].unique())
+
 #dfequity = data[data.AssetType=="EQ"].copy()
+#risk = st.sidebar.multiselect("Risk Factor", symbols )
 
 st.dataframe(data)
-
+st.sidebar.selectbox('Risk Contribution',['SPY','BABA'])
 
 
 
