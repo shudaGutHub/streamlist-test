@@ -317,8 +317,7 @@ def merge_underlyings(dft, prices, vols, col='Close'):
 
 
 def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01', end='2021-09-14'):
-
-
+	dict_impliedVol = {}
 
 	for row in df.itertuples():
 		assert row.AssetClass == "Option"
@@ -327,7 +326,10 @@ def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01'
 		sigma = row.HVOL
 
 		spot = row.Close
-		value_date = row.TradeData
+		trade_date = row[0][0] #TradeData (date)
+		ticker = row[0][1]   #Ticker
+		value_date = trade_date
+		print(value_date)
 		expiry = row.EXPIRY_DATE
 		number_of_days = (expiry - value_date).days
 		assert expiry >= value_date
@@ -345,16 +347,16 @@ def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01'
 				  number_of_days]
 
 		print([sym, spot, strike,number_of_days,sigma])
-		idxThisDayAndTicker = (row.TradeData,row.Ticker)
+		idxThisDayAndTicker = row[0]
 		if optPC =="P":
 			#Get Implied Vol from putPrice
-			df[idxThisDayAndTicker] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
-			impliedVols.loc[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
+
+			dict_impliedVol[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
 			mibianBS[idxThisDayAndTicker] = mibian.BS(bsdata,volatility=sigma*100)
 
 		elif optPC =="C":
 			# Get Implied Vol from callPrice
-			df.loc[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, callPrice=row.PriceBase).impliedVolatility
+			dict_impliedVol[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, callPrice=row.PriceBase).impliedVolatility
 			mibianBS[idxThisDayAndTicker] = mibian.BS(bsdata, volatility = row.HVOL * 100)
 
 		else:
@@ -364,7 +366,7 @@ def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01'
 	dictbs = {idx: model.__dict__ for idx, model in mibianBS.items()}
 	dfbs = pd.DataFrame.from_dict(dictbs, orient='index').reset_index().rename(columns={'level_0':'TradeData', 'level_1':'Ticker'})
 
-	return df,dfbs
+	return dict_impliedVol,dfbs
 
 
 
@@ -441,8 +443,9 @@ if __name__ == "__main__":
 	dfvols.columns = ['Date', 'Symbol', 'HVOL']
 	dfmerge_vols = pd.merge(dfvols, dfmerge_price, how='right', on=['Date', 'Symbol'])
 	dfmerge_vols['HVOL'] = dfmerge_vols['HVOL'].fillna(.5)
-
-	dfoptions, dfmodel = get_options(dfmerge_vols.query('AssetClass=="Option"'))
+	dfmerge_vols = dfmerge_vols.set_index(['TradeData','Ticker'])
+	dfmerge_vols_clean = dfmerge_vols[dfmerge_vols.EXPIRY_DATE > dfmerge_vols.Date].copy()
+	dfoptions, dfmodel = get_options(dfmerge_vols_clean.query('AssetClass=="Option"'))
 
 	dfmodel = dfmodel.rename(columns={'exerciceProbability':'probCall'})
 
