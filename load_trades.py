@@ -316,73 +316,67 @@ def merge_underlyings(dft, prices, vols, col='Close'):
 
 
 
-def get_options(df, start='2017-01-01', end='2021-09-14'):
-	impliedVols = {}
-	syms = list(df['Symbol'].unique())
-	#prices = yf.download(syms,start,end)
-	mibianBS={}
-	dftemp = df.copy()
+def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01', end='2021-09-14'):
 
-	for row in dftemp.itertuples():
+
+
+	for row in df.itertuples():
 		assert row.AssetClass == "Option"
-		sym= row.Symbol
-		sigma= row.HVOL
 
-		spot= row.Close
+		sym = row.Symbol
+		sigma = row.HVOL
 
-		number_of_days=row.TERM_DAYS
-		expiry=row.EXPIRY_DATE
-		strike=row.STRIKE
-		frate=row.RATE
-		qrate=row.RATE_Q
-		optPC=row.OptPC
-		bdfunds_ticker=None
-		value_date=row.TradeData
+		spot = row.Close
+		value_date = row.TradeData
+		expiry = row.EXPIRY_DATE
+		number_of_days = (expiry - value_date).days
+		assert expiry >= value_date
 
-		bsdata = [spot, strike, frate*100, number_of_days]
+		strike = row.STRIKE
+		frate = row.RATE
+		qrate = row.RATE_Q
+		optPC = row.OptPC
+		bdfunds_ticker = None
+
+
+		bsdata = [row.Close,
+				  row.STRIKE, #This is a fixed number for the life of the contract
+				  row.RATE * 100,
+				  number_of_days]
+
 		print([sym, spot, strike,number_of_days,sigma])
-		idx_val_trade = (row.TradeData,row.Ticker)
+		idxThisDayAndTicker = (row.TradeData,row.Ticker)
 		if optPC =="P":
+			#Get Implied Vol from putPrice
+			df[idxThisDayAndTicker] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
+			impliedVols.loc[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
+			mibianBS[idxThisDayAndTicker] = mibian.BS(bsdata,volatility=sigma*100)
 
-			dftemp[idx_val_trade] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
-			impliedVols[idx_val_trade] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
-			mibianBS[idx_val_trade] = mibian.BS(bsdata,volatility=sigma*100)
 		elif optPC =="C":
-
-			dftemp[idx_val_trade] = mibian.BS(bsdata, callPrice=row.PriceBase).impliedVolatility
-			impliedVols[idx_val_trade] = mibian.BS(bsdata, callPrice=row.PriceBase).impliedVolatility
-			mibianBS[idx_val_trade] = mibian.BS(bsdata, volatility = sigma * 100)
-
+			# Get Implied Vol from callPrice
+			df.loc[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, callPrice=row.PriceBase).impliedVolatility
+			mibianBS[idxThisDayAndTicker] = mibian.BS(bsdata, volatility = row.HVOL * 100)
 
 		else:
-			mibianBS[idx_val_trade] = None
-	df= df.set_index(['TradeData','Ticker'])
-	df['IVOL_TRADE'] = df.index.map(lambda idx:impliedVols.get(idx))
+			mibianBS[idxThisDayAndTicker] = None
+
+
 	dictbs = {idx: model.__dict__ for idx, model in mibianBS.items()}
 	dfbs = pd.DataFrame.from_dict(dictbs, orient='index').reset_index().rename(columns={'level_0':'TradeData', 'level_1':'Ticker'})
 
 	return df,dfbs
 
 
-def add_option_risk_historical(df):
-	model_params, prices_hvol = get_options(df)
-	grp_class_putcall = df.groupby(["AssetClass","OptPC"])
 
-	dfputs  = grp_class_putcall.get_group(('Option','P')).copy()
-	dfputs['putDelta'] = dfputs.set_index(prices_hvol.index).map(lambda idx: prices_hvol.get(idx).putDelta)
-
-
-	return dfputs
-
-
-dftrades = test_load_trades(filename_trades)
 #These are the trades since 12-31-2020
 #The year end positions / weights are in the file
 
 import sqlite3
 
-tbl_holdings_start= "BDIN_HOLDINGS_20201231"
-tbl_holdings_end = "BDIN_HOLDINGS_20210913"
+
+
+import pandas_flavor as pf
+
 def load_holdings(table):
 
 	global data
@@ -395,40 +389,15 @@ def load_holdings(table):
 	)
 	return dfpositions
 
-dfpositions_start = load_holdings(tbl_holdings_start)
-dfpositions_final = load_holdings(tbl_holdings_end)
-
-prices = load_prices_underlyings(dftrades)
-dfprices = prices['Close'].stack().reset_index().drop_duplicates()
-dfprices.columns = ['Date','Symbol','Close']
-dfmerge_price = pd.merge(dfprices, dftrades.reset_index(), how='right', on=['Date','Symbol'])
-
-
-dfattribution_ytd = test_load_attribution(filename_attribution_ytd)
-dfattribution_ltd = test_load_attribution(filename_attribution_ltd)
-dfnav = test_load_NAV(filename_NAV)
-
-
-
-
-
-returns = get_returns(prices['Adj Close'])
-vols = get_volatility(returns)
-dfvols = vols.stack().reset_index()
-
-
-dfvols.columns = ['Date','Symbol','HVOL']
-dfmerge_vols  =pd.merge(dfvols,dfmerge_price, how='right', on=['Date','Symbol'])
-dfmerge_vols['HVOL'] = dfmerge_vols['HVOL'].fillna(.5)
 
 
 
 
 import mibian
-dfoptions, dfbs = get_options(df_final.query('AssetClass=="Option"'))
-dfbs = dfbs.rename(columns={'exerciceProbability':'probCall'})
 
-dfderiv = pd.merge(dfbs, df_final)
+import dataclasses
+
+
 def add_risk_metrics(df):
 	"""Adds Position Delta , VaR"""
 
@@ -439,6 +408,44 @@ def add_risk_metrics(df):
 	df['POS_DELTA'] = df['RISK_UNITS']*df['DELTA_UNIT']
 	df['DOLLAR_DELTA'] = df['POS_DELTA'] * df['underlyingPrice']
 	return df
+
+
+if __name__ == "__main__":
+	impliedVols = {}
+
+	#prices = yf.download(syms,start,end)
+	mibianBS={}
+	tbl_holdings_start = "BDIN_HOLDINGS_20201231"
+	tbl_holdings_end = "BDIN_HOLDINGS_20210913"
+	dfpositions_start = load_holdings(tbl_holdings_start)
+
+
+	dfpositions_final = load_holdings(tbl_holdings_end)
+
+	dftrades = test_load_trades(filename_trades)
+
+
+	prices = load_prices_underlyings(dftrades)
+	dfprices = prices['Close'].stack().reset_index().drop_duplicates()
+	dfprices.columns = ['Date', 'Symbol', 'Close']
+	dfmerge_price = pd.merge(dfprices, dftrades.reset_index(), how='right', on=['Date', 'Symbol'])
+
+	dfattribution_ytd = test_load_attribution(filename_attribution_ytd)
+	dfattribution_ltd = test_load_attribution(filename_attribution_ltd)
+	dfnav = test_load_NAV(filename_NAV)
+
+	returns = get_returns(prices['Adj Close'])
+	vols = get_volatility(returns)
+	dfvols = vols.stack().reset_index()
+
+	dfvols.columns = ['Date', 'Symbol', 'HVOL']
+	dfmerge_vols = pd.merge(dfvols, dfmerge_price, how='right', on=['Date', 'Symbol'])
+	dfmerge_vols['HVOL'] = dfmerge_vols['HVOL'].fillna(.5)
+
+	dfoptions, dfmodel = get_options(dfmerge_vols.query('AssetClass=="Option"'))
+
+	dfmodel = dfmodel.rename(columns={'exerciceProbability':'probCall'})
+
 
 #dfoptions =pd.merge(dfoption_vol.reset_index(),dfoption_prices,on=['TradeData','Ticker'])
 #dfoptions = pd.DataFrame.from_dict(orient='index',data={idx:model.__dict__ for idx,model in prices_hvol.items()}).rename(columns={'exerciceProbability':'probExercise'})
