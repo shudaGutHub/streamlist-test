@@ -72,6 +72,25 @@ def get_yahoo_symbols():
  'EDUU45U': 'EDU'}
     return ISIN
 
+s3bucket = "s3://blkd/rshinydata/pricedata/"
+fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"  # Positions data derived from .xlsx file
+fps3_TradeList = "s3://blkd/rshinydata/summary/SampleTradeList.csv"  # Generated for only call options
+fps3_DashSummary = "s3://blkd/rshinydata/summary/DashSummary.csv"
+dfds = read_s3_csv(fps3_DashSummary) #DashSummary all calls
+dfds['Currency'] = dfds['Currency'].str.replace("GBp","GBP")
+dfds['YahooTicker'] = dfds['Symbol'].str.replace("0700.HK","TCEHY")
+dfds_GLOB = dfds[~dfds.Currency.isin(["USD"])].set_index('YahooTicker')[['Currency', 'ExchangeRate']]
+
+
+
+yahootickers_file = "C://Users//Saleem/projects/X8MKB/data/MAP_YAHOO_TICKERS.CSV"
+dftickers = pd.read_csv(yahootickers_file)  # ,index_col=['Ticker'], usecols=['Ticker','YahooTicker'])
+
+TARGET_EXPIRY = input("TARGET_EXPIRY:")
+s3bucket = "s3://blkd/rshinydata/pricedata/"
+fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"
+df_BDFund = read_s3_csv(fp=fps3_BDFund)
+
 
 
 
@@ -377,7 +396,6 @@ import sqlite3
 
 
 
-import pandas_flavor as pf
 
 def load_holdings(table):
 
@@ -529,3 +547,40 @@ if __name__ == "__main__":
 # 		self.callPrice = float(callPrice)
 # 		self.putPrice = float(putPrice)
 # 		self.putCallParity = self._parity()
+
+def read_s3_csv(fp, dtype=None, sentinels=None, parse_dates=None):
+    #read df from s3
+    s3 = S3FileSystem(anon=False)
+    #fp = os.path.join('s3://blkd/rshinydata/pricedata/{}'.format(filename))  # df_breederscup.csv'
+    df = pd.read_csv(s3.open(fp, mode='rb'),
+                     dtype=dtype,
+                     na_values=sentinels,
+                     parse_dates=parse_dates, keep_date_col=True)
+    return df
+def load_s3_equity(sym, dtype=None,sentinels=None, parse_dates=None ):
+    fp = "s3://blkd/rshinydata/currentoptdata/{}.csv".format(sym)
+    s3 = S3FileSystem(anon=False)
+    df = pd.read_csv(s3.open(fp, mode='rb'),
+                     dtype=dtype,
+                     na_values=sentinels,
+                     parse_dates=parse_dates, keep_date_col=True)
+    return df
+
+def load_s3_options(sym, dtype=None,sentinels=None, parse_dates=None ):
+        fp = "s3://blkd/rshinydata/currentoptdata/{}.csv".format(sym)
+        s3 = S3FileSystem(anon=False)
+        df = pd.read_csv(s3.open(fp, mode='rb'),
+                         dtype=dtype,
+                         na_values=sentinels,
+                         parse_dates=parse_dates, keep_date_col=True)
+        return df
+
+
+def get_option_data(df):
+    option_data = {}
+    for sym in df.Symbol.unique():
+        try:
+            option_data[sym] = load_s3_options(sym)
+        except:
+            pass
+    return pd.concat(option_data, axis=0)
