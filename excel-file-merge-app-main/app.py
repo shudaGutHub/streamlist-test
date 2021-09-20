@@ -7,7 +7,7 @@ import os
 
 # Web App Title
 st.markdown('''
-# **TrueQuant File Handler**
+# **Excel File Merger**
 
 This is the **Excel File Merger App** created in Python using the Streamlit library.
 
@@ -15,20 +15,6 @@ This is the **Excel File Merger App** created in Python using the Streamlit libr
 
 ---
 ''')
-
-def csv_file_merge(zip_file_name):
-    df = pd.DataFrame()
-    archive = zipfile.ZipFile(zip_file_name, 'r')
-    with zipfile.ZipFile(zip_file_name, "r") as f:
-        for file in f.namelist():
-          xlfile = archive.open(file)
-          if file.endswith('.csv'):
-            # Add a note indicating the file name that this dataframe originates from
-            df_xl = pd.read_csv(xlfile,parse_dates=['Date'])
-            df_xl['Note'] = file.split(".csv")[0]
-            # Appends content of each Excel file iteratively
-            df = df.append(df_xl, ignore_index=True)
-    return df
 
 # Excel file merge function
 def excel_file_merge(zip_file_name):
@@ -49,18 +35,18 @@ def excel_file_merge(zip_file_name):
 with st.sidebar.header('1. Upload your ZIP file'):
     uploaded_file = st.sidebar.file_uploader("Excel-containing ZIP file", type=["zip"])
     st.sidebar.markdown("""
-[Example ZIP input file]()
+[Example ZIP input file](https://github.com/dataprofessor/excel-file-merge-app/raw/main/nba_data.zip)
 """)
 
 # File download
 def filedownload(df):
-    csv = df.to_csv(f"{}"index=False)
+    csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
     href = f'<a href="data:file/csv;base64,{b64}" download="merged_file.csv">Download Merged File as CSV</a>'
     return href
 
 def xldownload(df):
-    df.to_excel('BDTrades.xlsx', index=False)
+    df.to_excel('data.xlsx', index=False)
     data = open('data.xlsx', 'rb').read()
     b64 = base64.b64encode(data).decode('UTF-8')
     #b64 = base64.b64encode(xl.encode()).decode()  # strings <-> bytes conversions
