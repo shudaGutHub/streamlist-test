@@ -6,18 +6,34 @@ import pathlib as pathlib
 from mibian import BS
 import yfinance as yf
 from BDFunds import *
+
+TARGET_EXPIRY = '2021-12-17'
+
+
+fp_DashSummary = pathlib.Path( "Z:\\rshinydata\\summary\\DashSummary.csv")
+fp_BDFund = pathlib.Path("Z:\\rshinydata\\summary\\BDFundPortfolio.csv")
+fp_TradeList = pathlib.Path("Z:\\rshinydata\\summary\\SampleTradeList.csv")
+
+path_dash = pathlib.Path("Z:\\rshinydata\\summary")
+path_options = pathlib.Path("Z:\\rshinydata\\currentoptdata")
+path_equities = pathlib.Path("Z:\\rshinydata\\pricedata")
+path_options_history = pathlib.Path("Z:\\rshinydata\\pricedata")
+
+options_bad_files = ['CurrentZones - Copy.csv', 'CurrentZones.csv', '_QuoteSummary.csv']
+
 DIR_DATA = pathlib.Path('C:\\Users\\salee\\projects\\streamlit-example')
 
-filename_holdings_start="BDIN_HOLDINGS_2020.xlsx"
-TABLE_HOLDINGS_END = 'BDIN_HOLDINGS_20210913'
-filename_tickers="tickers.csv"
 
+TABLE_HOLDINGS_END = 'BDIN_HOLDINGS_20210913'
+filename_tickers = "tickers.csv"
 filename_attribution_ytd = "BDIN_Security_YTD.xlsx"
 filename_attribution_ltd = "BDIN_Security_LTMONTH.xlsx"
-filename_holdings_end="BDIN__HOLDINGS_2021_Aug.xlsx"
-filename_trades = 'BDIN_Trades_20210916.xlsx'
+filename_holdings_end = "BDIN__HOLDINGS_2021_Aug.xlsx"
+filename_trades = "BDIN_TRADES_SI_20210916.xlsx"#BDIN_Trades_20210916.xlsx'
 filename_NAV = 'BDIN_NAV.xlsx'
+
 get_fp = lambda fname: pathlib.Path(DIR_DATA,fname)
+
 
 def get_yahoo_symbols():
     """Map from ISIN to yahoo tickers"""
@@ -115,20 +131,26 @@ class OptionModel(object):
 		self.impliedVol = self.yahoodata['impliedVolatility']
 
 	def add_underlying(self, bdpos):
-		self.underlying = yf.Ticker(self.sym)
+		try:
+			self.underlying = yf.Ticker(self.sym)
+		except:
+			self.underlying = yf.Ticker(f"input valid underlying {self.sym}")
 
 	# self.underlying = BDEquity(sym, start)
 	def load_s3(self):
-		pass
-		#self.data_s3 = load_s3_options(self.sym).query(
-		#'ExpirationYYYYMMDD==@self.expiry & strike==@self.strike & pc==@self.OptPC')
-
+		self.data_s3 = load_s3_options(self.sym)
+	
 	def term_in_years(self):
 		return (self.expiry - self.value_date).days / 365.0
 
-	def get_yahoo(self):
-		test_expiry = self.EXPIRY_YF.strftime("%Y-%m-%d")
+	def get_yahoo(self, chain=False):
+		
+		equity = self.underlying_ticker
+		test_expiry = self.EXPIRY_YF  # .strftime("%Y-%m-%d")
 		# test_expiry not in self.underlying_ticker.option_chain(test_expiry).calls.query("strike==@self.strike") #.strftime("%Y-%m-%d")- (pd.Timedelta(1, 'DAYS'))
+		if test_expiry < self.value_date:
+			print(f"Option expired {self.option_ticker}")
+			return 0.01
 
 		try:
 			if self.optPC == "C":
@@ -139,7 +161,10 @@ class OptionModel(object):
 				print("Not P or C")
 				return None
 		except:
-			test_expiry = self.expiry.date().strftime("%Y-%m-%d")
+			
+			expiration_dates = equity.options
+			print("Expiration Dates: ", expiration_dates)
+			self.expiry = input("Please enter valid date:")
 			if self.optPC == "C":
 				return self.underlying_ticker.option_chain(test_expiry).calls.query("strike==@self.strike")
 			if self.optPC == "P":
@@ -215,11 +240,13 @@ def get_returns_from_prices(prices):
 def get_volatilities_from_returns(returns):
 	return qs.stats.volatility(returns)
 
+
+
 def test_load_trades(filename):
 	df = pd.read_excel(
 	io = get_fp(filename),
 	engine = 'openpyxl',
-	sheet_name = 'BDIN_TRADES',
+	sheet_name = 'Sheet1',
 	skiprows = 0,  # TODO Process from raw file requires stripping top row
 	usecols = 'A:M',
 	parse_dates = ['Trade Data', 'Effective Date'],
@@ -318,7 +345,8 @@ def merge_underlyings(dft, prices, vols, col='Close'):
 
 def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01', end='2021-09-14'):
 	dict_impliedVol = {}
-
+	dict_histVol = {}
+	option_models = {}
 	for row in df.itertuples():
 		assert row.AssetClass == "Option"
 
@@ -339,8 +367,12 @@ def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01'
 		qrate = row.RATE_Q
 		optPC = row.OptPC
 		bdfunds_ticker = None
+		option_models[ticker] = {'Symbol': row.Symbol,
+								 'ExpiryDate': row.EXPIRY_DATE,
+								 'Strike': row.STRIKE,
+								 'OptPC': row.OptPC}
 
-
+		bsmodel = lambda row: row[['Close','Strike','RATE','TERM_DAYS']]
 		bsdata = [row.Close,
 				  row.STRIKE, #This is a fixed number for the life of the contract
 				  row.RATE * 100,
@@ -349,24 +381,38 @@ def get_options(df, attr_price='PriceBase', attr_vol="HVOL",  start='2017-01-01'
 		print([sym, spot, strike,number_of_days,sigma])
 		idxThisDayAndTicker = row[0]
 		if optPC =="P":
-			#Get Implied Vol from putPrice
-
-			dict_impliedVol[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, putPrice=row.PriceBase).impliedVolatility
-			mibianBS[idxThisDayAndTicker] = mibian.BS(bsdata,volatility=sigma*100)
+			model_from_price = mibian.BS(bsdata, putPrice=row.PriceBase)
+			model_from_hvol = mibian.BS(bsdata, volatility=row.HVOL * 100)
+			IVOL =model_from_price.impliedVolatility
+			PRICE_HVOL = model_from_hvol.putPrice
+			PRICE_IVOL = model_from_price.putPrice
+			DELTA_HVOL = model_from_hvol.putDelta
+			DELTA_IVOL = model_from_price.putDelta
+			TERM_DAYS = number_of_days
+			PROB_EXERCISE = 1.0 - mibian.BS(bsdata, volatility=row.HVOL*100).exerciceProbability
+			dict_histVol[idxThisDayAndTicker] =  [IVOL, PRICE_HVOL,PRICE_IVOL,DELTA_HVOL , DELTA_IVOL, TERM_DAYS,  PROB_EXERCISE]
 
 		elif optPC =="C":
 			# Get Implied Vol from callPrice
-			dict_impliedVol[idxThisDayAndTicker, f'impliedVolatility_{optPC}'] = mibian.BS(bsdata, callPrice=row.PriceBase).impliedVolatility
-			mibianBS[idxThisDayAndTicker] = mibian.BS(bsdata, volatility = row.HVOL * 100)
+			model_from_price = mibian.BS(bsdata, callPrice=row.PriceBase)
+			model_from_hvol = mibian.BS(bsdata, volatility=row.HVOL*100)
+			IVOL = model_from_price.impliedVolatility
+			PRICE_HVOL = model_from_hvol.callPrice
+			PRICE_IVOL = model_from_price.callPrice
+			DELTA_HVOL = model_from_hvol.callDelta
+			DELTA_IVOL = model_from_price.callDelta
+			TERM_DAYS = number_of_days
+			PROB_EXERCISE = mibian.BS(bsdata, volatility=row.HVOL*100).exerciceProbability
 
-		else:
-			mibianBS[idxThisDayAndTicker] = None
+			dict_histVol[idxThisDayAndTicker] = [IVOL, PRICE_HVOL, PRICE_IVOL, DELTA_HVOL, DELTA_IVOL, TERM_DAYS, PROB_EXERCISE]
 
-
+	computed_option_fields = ["IVOL", "PRICE_HVOL", "PRICE_IVOL", "DELTA_HVOL", "DELTA_IVOL", "TERM_DAYS",
+							  "PROB_EXERCISE"]
 	dictbs = {idx: model.__dict__ for idx, model in mibianBS.items()}
-	dfbs = pd.DataFrame.from_dict(dictbs, orient='index').reset_index().rename(columns={'level_0':'TradeData', 'level_1':'Ticker'})
-
-	return dict_impliedVol,dfbs
+	#dfbs = pd.DataFrame.from_dict(dictbs, orient='index').reset_index().rename(columns={'level_0':'TradeData', 'level_1':'Ticker'})
+	dfoptions = pd.DataFrame.from_dict(dict_histVol,orient='index', columns=computed_option_fields)
+	dfoptions.index = pd.MultiIndex.from_tuples(dfoptions.index.values, names=df.index.names)
+	return option_models, dfoptions
 
 
 
@@ -391,29 +437,137 @@ def load_holdings(table):
 	)
 	return dfpositions
 
+def load_market_environments():
+	"""Load MarketEnvironment by market"""
+	pass
 
 
+def get_equities(df):
+	options = {}
+	for row in df.itertuples():
+		assert row.AssetClass == "Equity"
+		options[row.ISIN] = EquityModel(
+			sym=row.SymbolBLK,
+			ISIN=row.ISIN)
+
+	return options
 
 
+def get_option_objects(df):
+	options = {}
+	for row in df.itertuples():
+		assert row.AssetClass == "Option"
+		options[row.ISIN] = OptionModel(value_date=row[0][0],
+										sym=row.Symbol,
+										sigma=row.HVOL,
+										spot=row.Close,
+										expiry=row.EXPIRY_DATE,
+										strike=row.STRIKE,
+										frate=row.RATE,
+										qrate=row.RATE_Q,
+										optPC=row.OptPC,
+										bdfunds_ticker=None)
+
+	return options
+
+
+def process_trades(df, holdings_start=None):
+	"""Clean columns"""
+	df.columns = [c.replace("/", "").strip().replace(" ", "").replace("%", "Pct") for c in df.columns]
+
+	dfeq =  df.query("AssetClass==['Equity','Option']").copy()
+	dfeq['Symbol'] = dfeq['Ticker'].str.split(" ").map(lambda x: x[0])
+
+	option_tickers_raw = dfeq.query('AssetClass == "Option"')['Ticker'].unique()
+
+	options_split = {ticker: dict(zip(["Symbol","Currency","ExpiryDate","PCStrike"],ticker.split(" "))) for ticker in option_tickers_raw}
+	options_split_Expiry = {ticker: pd.to_datetime(opt.get('ExpiryDate')) for ticker,opt in options_split.items()}
+
+	options_split_PutCall = {ticker:opt.get('PCStrike')[0] for ticker,opt in options_split.items()}
+	options_split_Strike = {ticker: float(opt.get('PCStrike')[1:]) for ticker, opt in options_split.items()}
+
+	dfeq['OptPC'] = dfeq['Ticker'].map(lambda x:options_split_PutCall.get(x,"C"))
+
+	dfeq['UNDERLYING_LAST_PRICE'] = dfeq['PriceBase']
+	dfeq['STRIKE'] = dfeq['Ticker'].map(lambda x: options_split_Strike.get(x, .01)) #StrikePrice or 1 cent for equities
+	dfeq['EXPIRY_DATE'] = dfeq['Ticker'].map(lambda x: options_split_Expiry.get(x,pd.to_datetime('2050-01-01'))) #Expiry or some date far in the future for Equity
+	dfeq['TERM_DAYS'] = (dfeq['EXPIRY_DATE'] - dfeq['TradeData']).map(lambda x: max(x.days, 0)) #Number of days in Term
+	dfeq['TERM_YEARS'] = dfeq['TERM_DAYS']/365.0
+	dfeq['RATE'] = .01
+	dfeq['RATE_Q'] =.0
+	dfeq['X8VOL'] = .25
+	dfeq['BSVOL'] = dfeq['X8VOL']*100
+	dfeq['Date'] = dfeq['TradeData'].values
+	dfeq = dfeq.set_index(['Date','Ticker'])
+def load_trades_from_db(table="BDIN_TRADES_SI_20210916"):
+	'''Get trades from db'''
+	global data
+	conn = sqlite3.connect("bdin.db")
+	c = conn.cursor()
+	data = pd.read_sql(con=conn, sql=f"SELECT * FROM {table}")
+	clean_column_sql = lambda df, col: df[col].map(lambda x: float(str(x).replace(",", "").replace("%","Pct")))
+	dftrades = data.assign(
+		SharesPar=clean_column_sql(data, 'Shares/Par'),
+		PctOfPortfolio =clean_column_sql(data, '%ofPortfolio'),
+
+	)
+
+value_date = '2021-09-19'
+fp_BDFund = pathlib.Path("Z:\\rshinydata\\summary\\BDFundPortfolio.csv")
+def load_BDFunds(fp=fp_BDFund, valdate=value_date):
+	"""Loads the BDFunds file from mounted S3"""
+
+
+	df = pd.read_csv(fp_BDFund, parse_dates=['OptExpiryYYYYMMDD'])
+	dfbd = df.assign(
+	Weight = df.CurrentWeight/100.0
+					 )
+	return dfbd
 import mibian
 
 import dataclasses
 
+def add_positions_by_date(df):
+	"""Accumulates positions in each security"""
+
+	dfpos = pd.pivot_table(df.reset_index(), index='TradeData', columns='SecurityDescription', values='SharesPar', aggfunc="sum", fill_value=0).cumsum()
+	return dfpos
 
 def add_risk_metrics(df):
 	"""Adds Position Delta , VaR"""
 
-	df['DELTA_UNIT'] = np.where(df['OptPC']=="P", df['putDelta'], df['callDelta'])
-	df['DELTA_UNIT'] = np.where(df['AssetClass'] == "Equity",1 , df['DELTA_UNIT'])
-	df['RISK_SCALING'] = np.where(df['AssetClass'] == "Option",100 , 1)
-	df['RISK_UNITS'] = df['RISK_SCALING']*df['SharesPar']
-	df['POS_DELTA'] = df['RISK_UNITS']*df['DELTA_UNIT']
-	df['DOLLAR_DELTA'] = df['POS_DELTA'] * df['underlyingPrice']
+
+	df['DELTA_UNIT'] = np.where(df['AssetClass'] == "Equity", 1 , df['DELTA_HVOL'])
+	df['RISK_SCALING'] = np.where(df['AssetClass'] == "Option", 100 , 1)
+	df['RISK_UNITS'] = df['RISK_SCALING'] * df['POS']
+
+
+	df['POS_DELTA'] = df['RISK_UNITS'] * df['DELTA_UNIT']
+	df['DOLLAR_DELTA'] = df['POS_DELTA'] * df['Close']
 	return df
 
+import streamlit as st
+
+TARGET_EXPIRY = '2021-12-17'
+s3bucket = "s3://blkd/rshinydata/pricedata/"
+fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"
+
+path_dash = pathlib.Path( "Z:\\rshinydata\\summary")
+path_options = pathlib.Path("Z:\\rshinydata\\currentoptdata")
+path_equities = pathlib.Path( "Z:\\rshinydata\\pricedata")
+path_options_history = pathlib.Path( "Z:\\rshinydata\\pricedata")
+fp_DashSummary = pathlib.Path( "Z:\\rshinydata\\summary\\DashSummary.csv")
+
+fp_TradeList = pathlib.Path( "Z:\\rshinydata\\summary\\SampleTradeList.csv")
+
+options_bad_files = ['CurrentZones - Copy.csv', 'CurrentZones.csv', '_QuoteSummary.csv']
+
+listfiles = lambda path: [p for p in os.listdir(path)]
+names_eq = [f.split(".csv")[0] for f in listfiles(path_equities) if not f.endswith('_split.csv')]
+tickers = {name: yf.Ticker(name) for name in names_eq}
 
 if __name__ == "__main__":
-	impliedVols = {}
+
 
 	#prices = yf.download(syms,start,end)
 	mibianBS={}
@@ -442,12 +596,25 @@ if __name__ == "__main__":
 
 	dfvols.columns = ['Date', 'Symbol', 'HVOL']
 	dfmerge_vols = pd.merge(dfvols, dfmerge_price, how='right', on=['Date', 'Symbol'])
-	dfmerge_vols['HVOL'] = dfmerge_vols['HVOL'].fillna(.5)
+	dfmerge_vols['HVOL'] = dfmerge_vols['HVOL'].fillna(.25)
 	dfmerge_vols = dfmerge_vols.set_index(['TradeData','Ticker'])
 	dfmerge_vols_clean = dfmerge_vols[dfmerge_vols.EXPIRY_DATE > dfmerge_vols.Date].copy()
-	dfoptions, dfmodel = get_options(dfmerge_vols_clean.query('AssetClass=="Option"'))
 
-	dfmodel = dfmodel.rename(columns={'exerciceProbability':'probCall'})
+
+	models, dfoptions = get_options(dfmerge_vols_clean.query('AssetClass=="Option"'))
+
+	dfderiv = dfmerge_vols.join(dfoptions, lsuffix="", rsuffix="_DERIV")
+	dfpos = add_positions_by_date(dfderiv).stack()
+	dfderiv = dfderiv.reset_index().set_index(['TradeData','SecurityDescription']).join(pd.Series(dfpos,name='POS'))
+	dfderiv = add_risk_metrics(dfderiv)
+
+
+
+	bsmodel = lambda row: row[['Close', 'Strike', 'RATE', 'TERM_DAYS']]
+	def get_days_remaining(model, valdate):
+		return (model['ExpiryDate'] - valdate).days
+
+
 
 
 #dfoptions =pd.merge(dfoption_vol.reset_index(),dfoption_prices,on=['TradeData','Ticker'])
