@@ -618,6 +618,9 @@ import pandas_flavor as pf
 @pf.register_dataframe_method
 def get_names_eq(df: pd.DataFrame):
 	return list(set(df['Symbol']))
+@pf.register_dataframe_method
+def filter_options(df:pd.DataFrame):
+	return df[df.AssetClass=="Equity"].copy()
 def get_pos_delta(df:pd.DataFrame):
 	return df.query('AssetClass=="Equity"').groupby(['Symbol','Date'])['SharesPar']
 
