@@ -37,6 +37,5 @@ class OptionContract:
             option_exercise_type=self.option_exercise_type
         )
 
-    def price(self, market_data: MarketData) -> float:
-        """
-        Calculate
+    def price(self):
+        pass
