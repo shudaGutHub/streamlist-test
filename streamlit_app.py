@@ -9,6 +9,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
+import sqlite3
 
 import pandas as pd
 
