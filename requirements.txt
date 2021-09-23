@@ -2,5 +2,4 @@ altair
 pandas
 streamlit
 matplotlib
-yfinance
-mibian
+sklearn
