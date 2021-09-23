@@ -15,6 +15,10 @@ import pandas as pd
 
 from sklearn import cluster, covariance, manifold
 from pandas import concat, DataFrame, read_csv, to_datetime, Series, MultiIndex
+import sqlite3
+
+conn = sqlite3.connect("bdin.db")
+
 # from datetime import timedelta, datetime
 
 
