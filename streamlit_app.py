@@ -40,7 +40,7 @@ data = pd.read_csv(f"{fund}.csv")
 #dfequity = data[data.AssetType=="EQ"].copy()
 #risk = st.sidebar.multiselect("Risk Factor", symbols )
 
-st.dataframe(data)
+
 st.sidebar.selectbox('Risk Contribution',['SPY','BABA'])
 
 
