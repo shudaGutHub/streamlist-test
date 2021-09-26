@@ -1,0 +1,56 @@
+﻿ID,Security Description,Symbol,Country,Sector,Asset Class,Asset Group,Shares/Par,Market Value,% of Portfolio,Book Cost,Price Cost,Price Close,Price Change %,Attribution to Book P&L %,Coupon Rate,CUSIP,ISIN,ESG,environment,Social,Governance,Symbol Unq.
+38790,Canadian Government 0.500% 12/01/2030,CAN Corp,Canada,Other,Bond,Government Bond,"1,617,000","1,517,066",4%,"1,589,978",98.33,93.82,-5%,0%,1%,135087L44,CA135087L443,-,-,-,-,135087L44 Corp
+1250,Amazon,AMZN US Equity,United States,Consumer Discretionary,Equity,Foreign Stock,260,"1,121,541",3%,"1,064,293",4093.43,4313.62,5%,0%,0,023135106,US0231351067,-,-,-,-,EQ0021695200001000 Equity
+6085,Salesforce Inc,CRM US Equity,United States,Information Technology,Equity,Foreign Stock,"3,119","1,031,618",2%,"922,536",295.78,330.75,12%,0%,0,79466L302,US79466L3024,-,-,-,-,EQ0108460500001000 Equity
+49848,Spdr S&P 500 ETF Trust Put 440 10/15/21,SPY US 10/15/21 P440 Equity,United States,Equity Index,Option,Option,"1,000","985,226",2%,"701,075",7.01,9.85,41%,0%,0,,SPYV440U,-,-,-,-,
+1255,Facebook Inc,FB US Equity,United States,Communication Services,Equity,Foreign Stock,"2,122","929,446",2%,"709,156",334.19,438.00,31%,0%,0,30303M102,US30303M1027,-,-,-,-,EQ0000000002815382 Equity
+25528,Amadeus IT Holding SA,AMS SM Equity,Europe,Information Technology,Equity,Foreign Stock,"10,845","904,249",2%,"906,705",83.61,83.38,0%,0%,0,,ES0109067019,-,-,-,-,ES0109067019 Equity
+38885,Deutsche Boerse Ag,DB1 GR Equity,Europe,Financials,Equity,Foreign Stock,"4,198","900,758",2%,"844,872",201.26,214.57,7%,0%,0,,DE0005810055,-,-,-,-,DB1 GR Equity
+38605,Mtu Aero Engines Ag,MTX GR Equity,Europe,Industrials,Equity,Foreign Stock,"2,974","881,169",2%,"870,616",292.74,296.29,1%,0%,0,,DE000A0D9PT0,-,-,-,-,MTX GR Equity
+28887,Uber Technologies Inc.,UBER US Equity,United States,Industrials,Equity,Domestic Stock,"15,355","879,275",2%,"1,014,572",66.07,57.26,-13%,0%,0,90353T100,US90353T1007,-,-,-,-,UBER US Equity
+38974,Mercadolibre Inc.,MELI US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,353,"846,708",2%,"646,740",1832.13,2398.61,31%,0%,0,58733R102,US58733R1023,-,-,-,-,MELI US Equity
+8739,Aena Sa,AENA SM Equity,Europe,Industrials,Equity,Foreign Stock,"4,023","844,893",2%,"805,302",200.17,210.02,5%,0%,0,,ES0105046009,-,-,-,-,ES0105046009 Equity
+43255,Alsea Sab De Cv,ALSEA* MM Equity,Mexico,Consumer Discretionary,Equity,Domestic Stock,"310,900","838,156",2%,"626,365",2.01,2.70,34%,0%,0,P0212A104,MXP001391012,-,-,-,-,ALSEA* MM Equity
+32327,Workday Inc.,WDAY US Equity,United States,Information Technology,Equity,Domestic Stock,"2,299","794,259",2%,"662,086",287.99,345.48,20%,0%,0,98138H101,US98138H1014,-,-,-,-,WDAY US Equity
+39579,Government Of Canada 0.500% 09/01/2025,CAN Corp,Canada,Government,Bond,Government Bond,"780,000","771,519",2%,"784,134",100.53,98.91,-2%,0%,1%,135087K94,CA135087K940,-,-,-,-,135087K94 Corp
+9420,Cboe Global Markets Inc,CBOE US Equity,United States,Financials,Equity,Foreign Stock,"4,453","704,625",2%,"504,546",113.30,158.24,40%,0%,0,12503M108,US12503M1080,-,-,-,-,EQ0000000009875726 Equity
+1251,Apple Inc,AAPL US Equity,United States,Information Technology,Equity,Foreign Stock,"3,679","684,786",2%,"579,077",157.40,186.13,18%,0%,0,037833100,US0378331005,-,-,-,-,EQ0010169500001000 Equity
+45278,Roblox Corp,RBLX US Equity,United States,Communication Services,Equity,Domestic Stock,"6,439","667,093",2%,"562,868",87.42,103.60,19%,0%,0,771049103,US7710491033,-,-,-,-,RBLX US Equity
+40817,"Arca Continental, S.A.B. De C.V.",AC* MM Equity,Mexico,Consumer Staples,Equity,Domestic Stock,"83,400","663,596",2%,"520,919",6.25,7.96,27%,0%,0,,MX01AC100006,-,-,-,-,AC* MM Equity
+39673,Fleetcor Technologies Inc.,FLT US Equity,United States,Information Technology,Equity,Domestic Stock,"2,020","662,243",2%,"648,958",321.27,327.84,2%,0%,0,339041105,US3390411052,-,-,-,-,FLT US Equity
+303,Microsoft Corp,MSFT US Equity,United States,Information Technology,Equity,Foreign Stock,"1,732","659,975",2%,"469,748",271.22,381.05,41%,0%,0,594918104,US5949181045,-,-,-,-,EQ0010174300001000 Equity
+22572,Tencent Holdings Limited,700 HK Equity,Hong Kong,Communication Services,Equity,Foreign Stock,"8,600","634,249",1%,"837,133",97.34,73.75,-24%,0%,0,,KYG875721634,-,-,-,-,KYG875721634 Equity
+47670,23Andme Holding Co,VGAC US Equity,United States,Health Care,Equity,Domestic Stock,"55,742","631,705",1%,"713,234",12.80,11.33,-11%,0%,0,90138Q108,US90138Q1085,-,-,-,-,VGAC US Equity
+1263,Visa Inc,V US Equity,United States,Information Technology,Equity,Foreign Stock,"2,132","606,071",1%,"556,608",261.07,284.27,9%,0%,0,92826C839,US92826C8394,-,-,-,-,EQ0000000005089229 Equity
+38881,Angi Homeservices Inc.,ANGI US Equity,United States,Communication Services,Equity,Domestic Stock,"38,753","602,876",1%,"726,181",18.74,15.56,-17%,0%,0,00183L102,US00183L1026,-,-,-,-,ANGI US Equity
+6756,American Tower Corp,AMT US Equity,United States,Real Estate,Equity,Foreign Stock,"1,605","601,279",1%,"465,922",290.29,374.63,29%,0%,0,03027X100,US03027X1000,-,-,-,-,EQ0021087000002000 Equity
+38693,Restoration Hardware Holdings Inc.,RH US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,661,"578,156",1%,"357,125",540.28,874.67,62%,0%,0,74967X103,US74967X1037,-,-,-,-,RH US Equity
+26460,Etsy Inc.,ETSY US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"2,045","572,518",1%,"535,734",261.97,279.96,7%,0%,0,29786A106,US29786A1060,-,-,-,-,ETSY US Equity
+29819,Aon Plc,AON US Equity,United States,Financials,Equity,Domestic Stock,"1,499","572,147",1%,"370,773",247.35,381.69,54%,0%,0,G0403H108,IE00BLP1HW54,-,-,-,-,G0403H108 Equity
+38887,Heineken Nv,HEIA NA Equity,Europe,Consumer Staples,Equity,Foreign Stock,"4,108","561,183",1%,"542,024",131.94,136.61,4%,0%,0,,NL0000009165,-,-,-,-,HEIA NA Equity
+46435,Swedish Match Ab,SWMAF Equity,Sweden,Consumer Staples,Equity,Foreign Stock,"47,002","560,262",1%,"452,119",9.62,11.92,24%,0%,0,BP09MR2,SE0015812219,-,-,-,-,SWMAF Equity
+1248,Alibaba Group Holding Ltd,BABA US Equity,China,Consumer Discretionary,Equity,Foreign Stock,"2,862","554,776",1%,"923,092",322.53,193.84,-40%,0%,0,01609W102,US01609W1027,-,-,-,-,EQ0000000035266994 Equity
+1770,Jack Henry & Associates Inc,JKHY US Equity,United States,Information Technology,Equity,Foreign Stock,"2,523","543,382",1%,"491,528",194.82,215.37,11%,0%,0,426281101,US4262811015,-,-,-,-,EQ0010484800001000 Equity
+18957,Corteva Inc,CTVA-W US Equity,United States,Materials,Equity,Foreign Stock,"10,050","537,914",1%,"448,396",44.62,53.52,20%,0%,0,22052L104,US22052L1044,-,-,-,-,CTVA-W US Equity
+22571,Prosus Nv,PROSF Equity,Europe,Consumer Discretionary,Equity,Foreign Stock,"5,076","524,913",1%,"515,092",101.48,103.41,2%,0%,0,,NL0013654783,-,-,-,-,NL0013654783 Equity
+10164,Broadcom Ltd,AVGO US Equity,United States,Information Technology,Equity,Foreign Stock,804,"513,638",1%,"446,033",554.77,638.85,15%,0%,0,11135F101,US11135F1012,-,-,-,-,EQ0000000044980627 Equity
+45536,Coinbase Global Inc,COIN US Equity,United States,Information Technology,Equity,Domestic Stock,"1,640","506,184",1%,"543,315",331.29,308.65,-7%,0%,0,19260Q107,US19260Q1076,-,-,-,-,COIN US Equity
+45110,"Tal Education Group, Adr",TAL US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"78,037","478,036",1%,"1,714,084",21.97,6.13,-72%,0%,0,874080104,US8740801043,-,-,-,-,TAL US Equity
+42395,Roper Technologies Inc.,ROP US Equity,United States,Industrials,Equity,Domestic Stock,773,"454,748",1%,"417,688",540.35,588.29,9%,0%,0,776696106,US7766961061,-,-,-,-,ROP US Equity
+38590,Frontdoor Inc.,FTDRV US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"7,965","446,850",1%,"501,514",62.96,56.10,-11%,0%,0,35905A109,US35905A1097,-,-,-,-,FTDRV US Equity
+46846,"New Oriental Education & Technology Group Inc., Ad",EDU US Equity,United States,Consumer Staples,Equity,Domestic Stock,"174,984","444,396",1%,"586,156",3.35,2.54,-24%,0%,0,647581107,US6475811070,-,-,-,-,EDU US Equity
+8292,Constellation Software Inc.,CSU CN Equity,Canada,Information Technology,Equity,Domestic Stock,199,"432,805",1%,"292,274",1468.71,2174.90,48%,0%,0,21037X100,CA21037X1006,-,-,-,-,B15C4L6 CN Equity
+39850,Japan Exchange Group Inc.,8697 JP Equity,Japan,Financials,Equity,Foreign Stock,"11,900","401,028",1%,"354,312",29.77,33.70,13%,0%,0,,JP3183200009,-,-,-,-,8697 JP Equity
+48704,New Oriental Education & Technology Group Inc,9901 HK Equity,Hong Kong,Consumer Discretionary,Equity,Foreign Stock,"169,200","398,202",1%,"446,348",2.64,2.35,-11%,0%,0,0,KYG6470A1168,-,-,-,-,9901 HK Equity
+26493,Trip.Com Group Ltd,TCOM US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"10,338","381,552",1%,"583,233",56.42,36.91,-35%,0%,0,89677Q107,US89677Q1076,-,-,-,-,TCOM US Equity
+1249,Alphabet Inc,GOOGL US Equity,United States,Communication Services,Equity,Foreign Stock,97,"347,318",1%,"212,227",2187.91,3580.60,64%,0%,0,02079K305,US02079K3059,-,-,-,-,EQ0000000044666717 Equity
+1843,Lockheed Martin Corp,LMT US Equity,United States,Industrials,Equity,Foreign Stock,774,"337,554",1%,"368,124",475.61,436.12,-8%,0%,0,539830109,US5398301094,-,-,-,-,EQ0015692300001000 Equity
+12101,Biogen Inc.,BIIB US Equity,United States,Health Care,Equity,Domestic Stock,902,"333,046",1%,"466,686",517.39,369.23,-29%,0%,0,09062X103,US09062X1037,-,-,-,-,2455965 US Equity
+38884,Accor Sa,AC FP Equity,Europe,Consumer Discretionary,Equity,Foreign Stock,"7,279","319,322",1%,"277,927",38.18,43.87,15%,0%,0,,FR0000120404,-,-,-,-,AC FP Equity
+40359,Realreal Inc. (The),REAL US Equity,United States,Consumer Discretionary,Equity,Domestic Stock,"17,888","305,904",1%,"487,286",27.24,17.10,-37%,0%,0,88339P101,US88339P1012,-,-,-,-,REAL US Equity
+1781,PepsiCo Inc,PEP US Equity,United States,Consumer Staples,Equity,Foreign Stock,748,"147,018",0%,"134,828",180.25,196.55,9%,0%,0,713448108,US7134481081,-,-,-,-,EQ0010115800001000 Equity
+1339,Garmin Ltd,GRMN US Equity,United States,Consumer Discretionary,Equity,Foreign Stock,59,"12,751",0%,"8,942",151.56,216.12,43%,0%,0,H2906T109,CH0114405324,-,-,-,-,EQ0118444400001000 Equity
+48364,Airbnb Inc Put 110 10/15/21,ABNB US 10/15/21 P110 Equity,United States,Consumer Discretionary,Option,Option,-60,-383,0,"-26,647",4.44,0.06,-99%,0%,0,,ABNBV110U,-,-,-,-,
+48366,Spotify Technology Sa Put 200 10/15/21,SPOT US 10/15/21 P200 Equity,United States,Communication Services,Option,Option,-40,"-5,207",0%,"-25,779",6.44,1.30,-80%,0%,0,,SPOTV200U,-,-,-,-,
+47752,American Tower Corp Call 300 10/15/21,AMT US 10/15/21 C300 Equity,United States,Real Estate,Option,Option,-16,"-6,534",0%,"-4,650",2.91,4.08,41%,0%,0,,AMTJ300U,-,-,-,-,
+50399,SPDR S&P 500 ETF Trust Put 410 10/15/21,SPY US 10/15/21 P410 Equity,,Equity Index,Option,Option,"-1,000","-242,478",-1%,"-660,918",6.61,2.42,-63%,0%,0,,SPYV410U,-,-,-,-,
