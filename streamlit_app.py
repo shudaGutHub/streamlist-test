@@ -33,15 +33,18 @@ value_date = st.date_input('Value Date')
 #URL_DASH = "https://blkd.s3.us-east-2.amazonaws.com/rshinydata/summary/DashSummary.csv"
 fund = st.selectbox('Select Fund', ['BDEQ_Portfolio','BDOP_Portfolio','BDIN_Portfolio','BDOP_DERIV'])
 
-data = pd.read_csv(f"{fund}.csv")
+data = pd.read_sql(con=conn, sql="SELECT * FROM BDFundPortfolio")
 
 #symbols = list(data['Symbol'].unique())
 
 #dfequity = data[data.AssetType=="EQ"].copy()
 #risk = st.sidebar.multiselect("Risk Factor", symbols )
 
-st.dataframe(data)
-st.sidebar.selectbox('Risk Contribution',['SPY','BABA'])
+st.dataframe(data.query("Portfolio == @fund & AssetType in ('EQ','OP')").set_index(["Symbol","Units"]))
+
+
+             
+st.sidebar.selectbox('Risk Contribution',)
 
 
 
