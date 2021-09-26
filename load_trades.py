@@ -5,7 +5,8 @@ import scipy.stats as stats
 import pathlib as pathlib
 from mibian import BS
 import yfinance as yf
-from BDFunds import *
+from helpers import convert_dates_YYYY_mm_dd, convert_to_USD, force_float
+#from BDFunds import *
 
 TARGET_EXPIRY = '2021-12-17'
 
@@ -106,6 +107,69 @@ TARGET_EXPIRY = input("TARGET_EXPIRY:")
 s3bucket = "s3://blkd/rshinydata/pricedata/"
 fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"
 df_BDFund = read_s3_csv(fp=fps3_BDFund)
+
+
+def load_trades_db(table, path_db):
+    """Loads TrueQuant exports from database
+    fund: "BDIN"
+    conn: conn = sqlite3.connect("bdin.db")
+    trades_BDIN
+    trades_BDEQ
+    trades_BDOP"""
+
+    conn = sqlite3.connect(path_db)
+    table = table
+
+    data = pd.read_sql(con=conn, sql=f"SELECT * FROM {table}")
+    data.columns = [c.replace("/", "").strip().replace(" ", "").replace("%", "Pct") for c in data.columns]
+    data['TradeData'] = helpers.convert_dates_YYYY_mm_dd(data, 'TradeData')
+    data['EffectiveDate'] = helpers.convert_dates_YYYY_mm_dd(data, 'EffectiveDate')
+    data['Date'] = helpers.convert_dates_YYYY_mm_dd(data, 'TradeData')
+    data['ValueTrade'] = helpers.force_float(data, 'Value')
+    data['SharesPar'] = helpers.force_float(data, 'SharesPar')
+    data['PriceBase'] = helpers.force_float(data, 'PriceBase')
+    data['PriceLocal'] = helpers.force_float(data, 'PriceLocal')
+    data['FirstTradeDate'] = data.groupby('Ticker')['TradeData'].transform(lambda d:d.min())
+
+    data = add_risk_multiplier(data)
+    df = process_trades(data)
+    return df
+
+
+def process_trades(df, holdings_start=None):
+    """Clean columns"""
+    df.columns = [c.replace("/", "").strip().replace(" ", "").replace("%", "Pct") for c in df.columns]
+
+    dfeq = df.query("AssetClass==['Equity','Option']").copy()
+    dfeq['Symbol'] = dfeq['Ticker'].str.split(" ").map(lambda x: x[0])
+
+    option_tickers_raw = dfeq.query('AssetClass == "Option"')['Ticker'].unique()
+
+    options_split = {ticker: dict(zip(["Symbol", "Currency", "ExpiryDate", "PCStrike"], ticker.split(" "))) for ticker
+                     in option_tickers_raw}
+    options_split_Expiry = {ticker: pd.to_datetime(opt.get('ExpiryDate')) for ticker, opt in options_split.items()}
+
+    options_split_PutCall = {ticker: opt.get('PCStrike')[0] for ticker, opt in options_split.items()}
+    options_split_Strike = {ticker: float(opt.get('PCStrike')[1:]) for ticker, opt in options_split.items()}
+
+    dfeq['OptPC'] = dfeq['Ticker'].map(lambda x: options_split_PutCall.get(x, "C"))
+
+    dfeq['UNDERLYING_LAST_PRICE'] = dfeq['PriceBase']
+    dfeq['STRIKE'] = dfeq['Ticker'].map(
+        lambda x: options_split_Strike.get(x, .01))  # StrikePrice or 1 cent for equities
+    dfeq['EXPIRY_DATE'] = dfeq['Ticker'].map(lambda x: options_split_Expiry.get(x, pd.to_datetime(
+        '2050-01-01')))  # Expiry or some date far in the future for Equity
+    dfeq['TERM_DAYS'] = (dfeq['EXPIRY_DATE'] - dfeq['TradeData']).map(
+        lambda x: max(x.days, 0))  # Number of days in Term
+    dfeq['TERM_YEARS'] = dfeq['TERM_DAYS'] / 365.0
+    dfeq['RATE'] = .01
+    dfeq['RATE_Q'] = .0
+    dfeq['X8VOL'] = .25
+    dfeq['BSVOL'] = dfeq['X8VOL'] * 100
+    dfeq['Date'] = dfeq['TradeData'].values
+
+    dfeq = dfeq.set_index(['Date', 'Ticker'])
+    return dfeq
 
 
 
@@ -630,17 +694,16 @@ listfiles = lambda path: [p for p in os.listdir(path)]
 names_eq = [f.split(".csv")[0] for f in listfiles(path_equities) if not f.endswith('_split.csv')]
 tickers = {name: yf.Ticker(name) for name in names_eq}
 
-
-
-import pandas_flavor as pf
-@pf.register_dataframe_method
-def get_names_eq(df: pd.DataFrame):
-	return list(set(df['Symbol']))
-@pf.register_dataframe_method
-def filter_options(df:pd.DataFrame):
-	return df[df.AssetClass=="Equity"].copy()
-def get_pos_delta(df:pd.DataFrame):
-	return df.query('AssetClass=="Equity"').groupby(['Symbol','Date'])['SharesPar']
+# <editor-fold desc="Description">
+#@pf.register_dataframe_method
+#def get_names_eq(df: pd.DataFrame):
+#	return list(set(df['Symbol']))
+#@pf.register_dataframe_method
+#def filter_options(df:pd.DataFrame):
+#	return df[df.AssetClass=="Equity"].copy()
+#def get_pos_delta(df:pd.DataFrame):
+#	return df.query('AssetClass=="Equity"').groupby(['Symbol','Date'])['SharesPar']
+# </editor-fold>
 
 
 
