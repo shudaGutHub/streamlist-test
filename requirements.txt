@@ -2,5 +2,8 @@ altair
 pandas
 streamlit
 matplotlib
+seaborn
 sklearn
 sqlalchemy
+yahoofinance
+quantstats
