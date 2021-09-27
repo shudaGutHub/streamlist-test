@@ -3,7 +3,8 @@ pandas
 streamlit
 matplotlib
 seaborn
-sklearn
 sqlalchemy
-yahoofinance
+yfinance
 quantstats
+xlwings
+yahoofinancials

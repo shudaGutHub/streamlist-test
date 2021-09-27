@@ -6,7 +6,7 @@ from yahoofinancials import YahooFinancials  # pip install yahoofinancials
 
 # ==============================
 # Purpose:
-# Returning stock, cryptocurrency, forex, mutual fund, commodity futures, ETF,
+# Returning stock, implied vol
 # and US Treasury financial data from Yahoo Finance & export it MS EXCEL
 #
 # Hints:
@@ -19,7 +19,7 @@ from yahoofinancials import YahooFinancials  # pip install yahoofinancials
 print(
     """
 ==============================
-Dividend & Portfolio Overview
+Dividend & Deriv Portfolio Overview
 ==============================
 """
 )

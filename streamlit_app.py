@@ -4,6 +4,7 @@ import math
 import pathlib
 import pandas as pd
 import streamlit as st
+from st_aggrid import AgGrid
 import sys
 
 import numpy as np
@@ -30,6 +31,6 @@ data = pd.read_sql(con=conn, sql="SELECT * FROM  main_BDFundPortfolio")
 #dfequity = data[data.AssetType=="EQ"].copy()
 #risk = st.sidebar.multiselect("Risk Factor", symbols )
 
-st.dataframe(data.query("Portfolio == @fund"))
+AgGrid(data)
 
-
+st.altair_chart(data)
