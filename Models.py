@@ -4,13 +4,21 @@ import dataclasses
 import datetime as datetime
 from dataclasses import dataclass
 
-from BDFunds import MarketData
 
 
-class Option:
-	pass
 
 
+@dataclass
+class OptionMarketModel(object):
+    OptionTicker: str
+    Symbol: str
+    OptPC: str
+    Expiry: pd.datetime
+    Strike: float
+    Symbol : str
+    yTicker : yf.Ticker()
+def __repr__(self):
+        return self.OptionTicker
 @dataclass
 class OptionContract:
     """
