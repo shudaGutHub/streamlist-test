@@ -37,13 +37,12 @@ def load_trades_db(table, path_db):
     return data
 
 
-def test_load_trades_db():
-    return load_trades_db(table="BDIN_TRADES", path_db=pathlib.Path(
-        pathlib.Path("C:/Users/salee/projects/streamlit-example/BLACKDIAMON.db")))
+
+
 
 
 if __name__=="__main__":
-    trades = test_load_trades_db()
+    trades = load_trades_db('trades_BDEQ')
     trades_equity = trades.groupby("AssetClass").get_group("Equity").copy()
     trades_option = trades.groupby("AssetClass").get_group("Option").copy()
     print (trades_equity.head())
