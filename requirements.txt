@@ -1,8 +1,10 @@
 altair
 pandas
+plotly
 streamlit
-matplotlib
 seaborn
+matplotlib
+psycopg2
 sqlalchemy
 yfinance
 quantstats
