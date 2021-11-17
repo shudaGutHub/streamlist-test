@@ -89,24 +89,22 @@ def get_yahoo_symbols():
  'EDUU45U': 'EDU'}
     return ISIN
 
-s3bucket = "s3://blkd/rshinydata/pricedata/"
-fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"  # Positions data derived from .xlsx file
-fps3_TradeList = "s3://blkd/rshinydata/summary/SampleTradeList.csv"  # Generated for only call options
-fps3_DashSummary = "s3://blkd/rshinydata/summary/DashSummary.csv"
-dfds = read_s3_csv(fps3_DashSummary) #DashSummary all calls
+#s3bucket = "s3://blkd/rshinydata/pricedata/"
+#fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"  # Positions data derived from .xlsx file
+#fps3_TradeList = "s3://blkd/rshinydata/summary/SampleTradeList.csv"  # Generated for only call options
+#fps3_DashSummary = "s3://blkd/rshinydata/summary/DashSummary.csv"
+dfds = pd.read_csv(fp_DashSummary, error_bad_lines=False) #DashSummary all calls
 dfds['Currency'] = dfds['Currency'].str.replace("GBp","GBP")
 dfds['YahooTicker'] = dfds['Symbol'].str.replace("0700.HK","TCEHY")
 dfds_GLOB = dfds[~dfds.Currency.isin(["USD"])].set_index('YahooTicker')[['Currency', 'ExchangeRate']]
 
+import pandas as pd
 
+#yahootickers_file = "C://Users//Saleem/projects/X8MKB/data/MAP_YAHOO_TICKERS.CSV"
+#dftickers = pd.read_csv(yahootickers_file)  # ,index_col=['Ticker'], usecols=['Ticker','YahooTicker'])
 
-yahootickers_file = "C://Users//Saleem/projects/X8MKB/data/MAP_YAHOO_TICKERS.CSV"
-dftickers = pd.read_csv(yahootickers_file)  # ,index_col=['Ticker'], usecols=['Ticker','YahooTicker'])
+TARGET_EXPIRY = '2021-11-20'
 
-TARGET_EXPIRY = input("TARGET_EXPIRY:")
-s3bucket = "s3://blkd/rshinydata/pricedata/"
-fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"
-df_BDFund = read_s3_csv(fp=fps3_BDFund)
 
 
 def load_trades_db(table, path_db):
@@ -176,139 +174,6 @@ def process_trades(df, holdings_start=None):
 
 
 map_FX = {'Europe':1.2, 'United States':1, 'Mexico': .25, 'Brazil':.2, 'United Kingdom':1.2, 'Switzerland':1.3,'China':1.0, 'Hong Kong':.6}
-class EquityModel(object):
-	def __init__(self, sym, ISIN):
-		self.sym = sym
-		self.ISIN = ISIN
-		self.data = pd.DataFrame
-
-	def load(self, data):
-		self.data = data
-
-	def price(self, value_date):
-		return self.data.loc[value_date]
-
-	def __repr__(self):
-		return self.sym
-
-
-class OptionModel(object):
-	def __init__(self, value_date, sym, spot, sigma, optPC, strike, expiry, frate, qrate, bdfunds_ticker=None):
-		"""optPC:"C", sym:"CRM", strike:227, expiry"""
-		print("Sym: {}".format(sym))
-		self.value_date = value_date
-		self.sym = sym
-		self.spot = spot
-		self.sigma = sigma
-		self.optPC = optPC
-		self.strike = strike
-		self.expiry = expiry
-		self.frate = frate
-		self.qrate = qrate
-		self.EXPIRY_YF = self.expiry - (pd.Timedelta(1, 'DAYS'))
-		self.bdfunds_ticker = bdfunds_ticker
-		self.option_ticker = "_".join([optPC, sym, str(strike), expiry.strftime("%Y%m%d")])
-		self.underlying_ticker = yf.Ticker(self.sym)
-		self.data_s3 = None
-		self.yahoodata = self.get_yahoo()
-		self.impliedVol = self.yahoodata['impliedVolatility']
-
-	def add_underlying(self, bdpos):
-		try:
-			self.underlying = yf.Ticker(self.sym)
-		except:
-			self.underlying = yf.Ticker(f"input valid underlying {self.sym}")
-
-	# self.underlying = BDEquity(sym, start)
-	def load_s3(self):
-		self.data_s3 = load_s3_options(self.sym)
-	
-	def term_in_years(self):
-		return (self.expiry - self.value_date).days / 365.0
-
-	def get_yahoo(self, chain=False):
-		
-		equity = self.underlying_ticker
-		test_expiry = self.EXPIRY_YF  # .strftime("%Y-%m-%d")
-		# test_expiry not in self.underlying_ticker.option_chain(test_expiry).calls.query("strike==@self.strike") #.strftime("%Y-%m-%d")- (pd.Timedelta(1, 'DAYS'))
-		if test_expiry < self.value_date:
-			print(f"Option expired {self.option_ticker}")
-			return 0.01
-
-		try:
-			if self.optPC == "C":
-				return self.underlying_ticker.option_chain(test_expiry).calls.query("strike==@self.strike")
-			if self.optPC == "P":
-				return self.underlying_ticker.option_chain(test_expiry).puts.query("strike==@self.strike")
-			else:
-				print("Not P or C")
-				return None
-		except:
-			
-			expiration_dates = equity.options
-			print("Expiration Dates: ", expiration_dates)
-			self.expiry = input("Please enter valid date:")
-			if self.optPC == "C":
-				return self.underlying_ticker.option_chain(test_expiry).calls.query("strike==@self.strike")
-			if self.optPC == "P":
-				return self.underlying_ticker.option_chain(test_expiry).puts.query("strike==@self.strike")
-			else:
-				print("Not P or C")
-				return None
-
-	@staticmethod
-	def bsm_price(option_type, sigma, s, k, r, T, q):
-		# calculate the bsm price of European call and put options
-
-		sigma = float(sigma)
-		d1 = (np.log(s / k) + (r - q + sigma ** 2 * 0.5) * T) / (sigma * np.sqrt(T))
-		d2 = d1 - sigma * np.sqrt(T)
-		if option_type == 'C':
-			price = np.exp(-r * T) * (s * np.exp((r - q) * T) * stats.norm.cdf(d1) - k * stats.norm.cdf(d2))
-			return price
-		elif option_type == 'P':
-			price = np.exp(-r * T) * (k * stats.norm.cdf(-d2) - s * np.exp((r - q) * T) * stats.norm.cdf(-d1))
-			return price
-		else:
-			print('No such option type %s') % option_type
-
-	# Sharpe Ratio
-
-	def theo_price(self):
-
-		return self.bsm_price(option_type=self.optPC,
-							  sigma=self.sigma,
-							  s=self.spot,
-							  k=self.strike,
-							  r=self.frate,
-							  T=self.term_in_years(),
-							  q=self.qrate)
-
-	def delta(self, S, K, T, r, optPC, q=0, sigma=.3):
-		"""BSM delta formulaa"""
-		d1 = (np.log(S / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * np.sqrt(T))
-		result = 0
-		if optPC == 'C':
-			result = stats.norm.cdf(d1, 0.0, 1.0)
-		elif optPC == 'P':
-			result = stats.norm.cdf(d1, 0.0, 1.0) - 1
-
-		return result
-
-	def __repr__(self):
-		return self.option_ticker
-
-
-def get_equities(df):
-	options = {}
-	for row in df.itertuples():
-		assert row.AssetClass == "Equity"
-		options[row.ISIN] = EquityModel(
-			sym=row.SymbolBLK,
-			ISIN=row.ISIN)
-
-	return options
-
 
 def load_prices_underlyings(dft, start_date='2017-01-01', end_date='2021-09-15'):
 	"""Load price data"""
@@ -630,8 +495,6 @@ def load_trades_from_db(table="trades_BDIN"):
 
 
 
-
-
 value_date = '2021-09-16'
 fp_BDFund = pathlib.Path("Z:\\rshinydata\\summary\\BDFundPortfolio.csv")
 def load_BDFunds(fp=fp_BDFund, valdate=value_date):
@@ -677,21 +540,21 @@ def report_from_NAV(fund):
 import streamlit as st
 
 TARGET_EXPIRY = '2021-12-17'
-s3bucket = "s3://blkd/rshinydata/pricedata/"
-fps3_BDFund = "s3://blkd/rshinydata/summary/BDFundPortfolio.csv"
+
 
 path_dash = pathlib.Path( "Z:\\rshinydata\\summary")
 path_options = pathlib.Path("Z:\\rshinydata\\currentoptdata")
 path_equities = pathlib.Path( "Z:\\rshinydata\\pricedata")
 path_options_history = pathlib.Path( "Z:\\rshinydata\\pricedata")
-fp_DashSummary = pathlib.Path( "Z:\\rshinydata\\summary\\DashSummary.csv")
+fp_DashSummary = pathlib.Path("Z:\\rshinydata\\summary\\DashSummary.csv")
 
 fp_TradeList = pathlib.Path( "Z:\\rshinydata\\summary\\SampleTradeList.csv")
 
 options_bad_files = ['CurrentZones - Copy.csv', 'CurrentZones.csv', '_QuoteSummary.csv']
-
+import os
 listfiles = lambda path: [p for p in os.listdir(path)]
 names_eq = [f.split(".csv")[0] for f in listfiles(path_equities) if not f.endswith('_split.csv')]
+
 tickers = {name: yf.Ticker(name) for name in names_eq}
 
 # <editor-fold desc="Description">
@@ -718,7 +581,7 @@ if __name__ == "__main__":
 
 	dfattribution_ytd = test_load_attribution(filename_attribution_ytd)
 	dfattribution_ltd = test_load_attribution(filename_attribution_ltd)
-	AUM = pd.read_csv("./BDIN_NAV.csv", parse_dates=['Date']).query("Class=='F'")
+	#AUM = pd.read_csv("./BDIN_NAV.csv", parse_dates=['Date']).query("Class=='F'")
 
 
 

@@ -4,9 +4,11 @@ plotly
 streamlit
 seaborn
 matplotlib
-sklearn
-sqlalchemy
-mibian
 psycopg2
 sqlalchemy
-tweepy
+yfinance
+quantstats
+xlwings
+yahoofinancials
+mibian
+

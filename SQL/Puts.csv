@@ -1,0 +1,25 @@
+SecurityDescription,Ticker,AssetClass,Sector,Type,Shares/Par,PriceBase,PriceLocal,Value,%ofPortfolio,Currency,TradeData,EffectiveDate,Note
+Spdr S&P 500 ETF Trust Put 340 02/19/21,SPY US 02/19/21 P340 Equity,Option,Equity Index,Write A Put,-1000,3.85,3.01,-382047,-0.006,USD,2021-01-04,2021-01-05,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 340 02/19/21,SPY US 02/19/21 P340 Equity,Option,Equity Index,Write A Put,-400,5.06,3.96,-201336,-0.0031,USD,2021-01-04,2021-01-05,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 350 04/16/21,SPY US 04/16/21 P350 Equity,Option,Equity Index,Write A Put,-1000,5.74,4.55,-571346,-0.0089,USD,2021-02-25,2021-02-26,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 360 06/18/21,SPY US 06/18/21 P360 Equity,Option,Equity Index,Write A Put,-1000,7.45,5.92,-742331,-0.0116,USD,2021-03-23,2021-03-24,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 368 04/16/21,SPY US 04/16/21 P368 Equity,Option,Equity Index,Write A Put,-1500,3.03,2.4,-450091,-0.007,USD,2021-03-25,2021-03-26,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 390 06/18/21,SPY US 06/18/21 P390 Equity,Option,Equity Index,Write A Put,-1000,2.72,2.25,-269364,-0.0042,USD,2021-05-10,2021-05-11,BDOP_BUYS.xlsx
+New Oriental Education & T Put 8.5 07/16/21,EDU US 07/16/21 P8.5 Equity,Option,Consumer Discretionary,Write A Put,-922,1.57,1.3,-142290,-0.0022,USD,2021-06-07,2021-06-08,BDOP_BUYS.xlsx
+Tal Education Group Put 25 07/16/21,TAL US 07/16/21 P25 Equity,Option,Consumer Discretionary,Write A Put,-412,3.99,3.3,-163126,-0.0025,USD,2021-06-07,2021-06-08,BDOP_BUYS.xlsx
+Tal Education Group Put 25 08/20/21,TAL US 08/20/21 P25 Equity,Option,Consumer Discretionary,Write A Put,-1500,8.75,7.01,-1308180,-0.0204,USD,2021-07-07,2021-07-08,BDOP_BUYS.xlsx
+New Oriental Education & T Put 7.5 08/20/21,EDU US 08/20/21 P7.5 Equity,Option,Consumer Discretionary,Write A Put,-2500,2.07,1.65,-509324,-0.0079,USD,2021-07-08,2021-07-09,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 415 09/17/21,SPY US 09/17/21 P415 Equity,Option,Equity Index,Write A Put,-500,7.78,6.17,-387606,-0.006,USD,2021-07-15,2021-07-16,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 415 09/17/21,SPY US 09/17/21 P415 Equity,Option,Equity Index,Write A Put,-1000,7.52,5.96,-749033,-0.0117,USD,2021-07-15,2021-07-16,BDOP_BUYS.xlsx
+Alibaba Group Holding Ltd Put 235 09/17/21,BABA US 09/17/21 P235 Equity,Option,Consumer Discretionary,Write A Put,-200,33.99,27.05,-679314,-0.0106,USD,2021-07-21,2021-07-22,BDOP_BUYS.xlsx
+Wynn Resorts Ltd Put 125 09/17/21,WYNN US 09/17/21 P125 Equity,Option,Consumer Discretionary,Write A Put,-500,23.25,18.5,-1161092,-0.0181,USD,2021-07-21,2021-07-22,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 410 09/17/21,SPY US 09/17/21 P410 Equity,Option,Equity Index,Write A Put,-1500,5.85,4.65,-874365,-0.0136,USD,2021-07-27,2021-07-28,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 420 08/20/21,SPY US 08/20/21 P420 Equity,Option,Equity Index,Write A Put,-2000,3.25,2.58,-645873,-0.0101,USD,2021-07-27,2021-07-28,BDOP_BUYS.xlsx
+New Oriental Education & T Put 3.5 09/17/21,EDU US 09/17/21 P3.5 Equity,Option,Consumer Discretionary,Write A Put,-5000,1.74,1.4,-858839,-0.0134,USD,2021-07-29,2021-07-30,BDOP_BUYS.xlsx
+New Oriental Education & T Put 4.5 09/17/21,EDU US 09/17/21 P4.5 Equity,Option,Consumer Discretionary,Write A Put,-5000,2.86,2.3,-1418951,-0.0221,USD,2021-07-29,2021-07-30,BDOP_BUYS.xlsx
+Tal Education Group Put 7.5 09/17/21,TAL US 09/17/21 P7.5 Equity,Option,Consumer Discretionary,Write A Put,-4000,3.05,2.45,-1209842,-0.0189,USD,2021-07-29,2021-07-30,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 400 09/07/21,SPY US 09/07/21 P400 Equity,Option,Equity Index,Write A Put,-1000,2.41,1.92,-238530,-0.0037,USD,2021-08-03,2021-08-04,BDOP_BUYS.xlsx
+Wynn Resorts Ltd Put 50 03/18/22,WYNN US 03/18/22 P50 Equity,Option,Consumer Discretionary,Write A Put,-200,1.06,0.84,-20884,-0.0003,USD,2021-08-09,2021-08-10,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 410 09/17/21,SPY US 09/17/21 P410 Equity,Option,Equity Index,Write A Put,-1500,2.2,1.75,-326164,-0.0051,USD,2021-08-16,2021-08-17,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 420 10/15/21,SPY US 10/15/21 P420 Equity,Option,Equity Index,Write A Put,-1500,3.23,2.56,-479723,-0.0075,USD,2021-09-01,2021-09-02,BDOP_BUYS.xlsx
+Spdr S&P 500 ETF Trust Put 420 10/15/21,SPY US 10/15/21 P420 Equity,Option,Equity Index,Write A Put,-1500,3.83,3.02,-569675,-0.0089,USD,2021-09-08,2021-09-09,BDOP_BUYS.xlsx

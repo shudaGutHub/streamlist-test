@@ -2,13 +2,17 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
+import os
 import sqlite3
 from _csv import reader
 import openpyxl
+import sqlalchemy
 import streamlit as st
 import pandas as pd
 import pathlib
+
+from sqlalchemy import create_engine
+
 from helpers import convert_to_USD, convert_dates_YYYY_mm_dd, checkmerge
 import helpers
 
@@ -110,12 +114,19 @@ def load_csv(filename):
             dataset.append(row)
     return dataset
 
-
+import os
 def load_funds_from_S3():
     funds = ["BDEQ", "BDIN", "BDOP"]
     funds_holdings = {f: load_holdings_TQ(fund=f) for f in funds}
     return funds_holdings
+# Create a database connection
+import sqlalchemy
+db_password = os.environ.get('DB_PASSWORD')  # Set to your own password
+engine = sqlalchemy.create_engine('postgresql://postgres:{}@localhost/stockdata'.format(db_password))
 
+# Set some variables of where the CSV files are containing the pricing and ticker information
+bars_path = 'data/bars'
+tickers_path = 'data/tickers'
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # Load positions
